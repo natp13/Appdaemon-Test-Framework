@@ -191,6 +191,7 @@ class RegisteredWrapper:
     def __init__(self, automation_thing_to_check, hass_functions):
         self.automation_thing_to_check = automation_thing_to_check
         self._run_daily = hass_functions['run_daily']
+        self._run_in = hass_functions['run_in']
 
     def run_daily(self, time_, **kwargs):
         registered_wrapper = self
@@ -201,6 +202,19 @@ class RegisteredWrapper:
                 registered_wrapper._run_daily.assert_any_call(
                     callback,
                     time_,
+                    **kwargs)
+
+        return WithCallbackWrapper()
+
+    def run_in(self, milliseconds_, **kwargs):
+        registered_wrapper = self
+
+        class WithCallbackWrapper:
+            def with_callback(self, callback):
+                registered_wrapper.automation_thing_to_check.initialize()
+                registered_wrapper._run_in.assert_any_call(
+                    callback,
+                    milliseconds_,
                     **kwargs)
 
         return WithCallbackWrapper()
