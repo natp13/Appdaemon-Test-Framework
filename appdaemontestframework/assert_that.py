@@ -13,7 +13,7 @@ class ServiceOnAnyDomain:
     # We just check that the SERVICE part is equal
 
     def __eq__(self, other):
-        """ 
+        """
         Turn on service look like: 'DOMAIN/SERVICE'
         We just check that the SERVICE part is equal
         """
@@ -192,6 +192,7 @@ class RegisteredWrapper:
         self.automation_thing_to_check = automation_thing_to_check
         self._run_daily = hass_functions['run_daily']
         self._run_in = hass_functions['run_in']
+        self._run_mintely = hass_functions['run_minutely']
 
     def run_daily(self, time_, **kwargs):
         registered_wrapper = self
@@ -215,6 +216,19 @@ class RegisteredWrapper:
                 registered_wrapper._run_in.assert_any_call(
                     callback,
                     milliseconds_,
+                    **kwargs)
+
+        return WithCallbackWrapper()
+
+    def run_minutely(self, time_, **kwargs):
+        registered_wrapper = self
+
+        class WithCallbackWrapper:
+            def with_callback(self, callback):
+                registered_wrapper.automation_thing_to_check.initialize()
+                registered_wrapper._run_mintely.assert_any_call(
+                    callback,
+                    time_,
                     **kwargs)
 
         return WithCallbackWrapper()
