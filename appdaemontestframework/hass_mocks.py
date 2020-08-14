@@ -87,6 +87,7 @@ class HassMocks:
             MockHandler(Hass, 'set_state'),
             MockHandler(Hass, 'get_state'),
             MockHandler(Hass, 'time'),
+            MockHandler(Hass, 'date'),
             DictMockHandler(Hass, 'args'),
 
             ### Interactions functions
