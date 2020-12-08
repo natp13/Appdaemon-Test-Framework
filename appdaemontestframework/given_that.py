@@ -113,6 +113,9 @@ class GivenThatWrapper:
     def date_is(self, date_as_datetime):
         self.hass_functions['date'].return_value = date_as_datetime
 
+    def datetime_is(self, d):
+        self.hass_functions['datetime'].return_value = d
+
     def mock_functions_are_cleared(self, clear_mock_states=False,
                                    clear_mock_passed_args=False):
         for mocked_function in self.hass_functions.values():
